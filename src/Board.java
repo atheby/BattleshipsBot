@@ -24,6 +24,7 @@ public class Board {
 	public int getSize() {
 		return size;
 	}
+	
 	public String[][] getBoard() {
 		return board;
 	}

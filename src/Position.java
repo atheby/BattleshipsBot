@@ -1,5 +1,6 @@
 
 public class Position {
+	
 	private int row, column;
 	private Orientation orientation;
 	

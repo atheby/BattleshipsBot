@@ -5,42 +5,42 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class PositionGenerator {
 	
-	private List<Ship> ships;
+	private List<MyShip> ships;
 	private Board board;
 	
 	public PositionGenerator(Board b) {
-		ships = new ArrayList<Ship>();
+		ships = new ArrayList<MyShip>();
 		board = b;
 		addShips();
 		generatePosition();
 	}
 	
 	private void addShips() {
-		ships.add(new Ship(1));
-		ships.add(new Ship(1));
-		ships.add(new Ship(2));
-		ships.add(new Ship(2));
-		ships.add(new Ship(3));
-		ships.add(new Ship(4));
-		ships.add(new Ship(5));
-		Collections.reverse(ships);
+		ships.add(new MyShip(1));
+		ships.add(new MyShip(1));
+		ships.add(new MyShip(2));
+		ships.add(new MyShip(2));
+		ships.add(new MyShip(3));
+		ships.add(new MyShip(4));
+		ships.add(new MyShip(5));
+		Collections.reverse(getShips());
 	}
 	
 	private void generatePosition() {
 		Position pos;
 		int max;
-		for(Ship ship : ships) {
+		for(MyShip ship : getShips()) {
 			max = board.getSize() - ship.getSize();
 			do {
 				pos = new Position();
 				pos.setOrientation(Orientation.values()[getRandom(0, 1)]);
 				if(pos.getOrientation().equals(Orientation.Horizontally)) {
-					pos.setRow(getRandom(0, 9));
+					pos.setRow(getRandom(0, board.getSize() - 1));
 					pos.setColumn(getRandom(0, max));
 				}
 				else {
 					pos.setRow(getRandom(0, max));
-					pos.setColumn(getRandom(0, 9));
+					pos.setColumn(getRandom(0, board.getSize() - 1));
 				}
 			}
 			while(!isSpaceFree(pos, ship));
@@ -61,7 +61,7 @@ public class PositionGenerator {
 		return true;
 	}
 	
-	private void putOnBoard(Ship s) {
+	private void putOnBoard(MyShip s) {
 		if(s.getPosition().getOrientation().equals(Orientation.Horizontally))
 			for(int c = 0; c < s.getSize(); c++)
 				board.getBoard()[s.getPosition().getRow()][s.getPosition().getColumn() + c] = Symbols.SHIP;
@@ -75,13 +75,13 @@ public class PositionGenerator {
 	}
 	
 	public void printAllCoordinates() {
-		Collections.sort(ships);
-		for(Ship ship : getShips()) {
+		Collections.sort(getShips());
+		for(MyShip ship : getShips()) {
 			ship.printCoordinates();
 		}
 	}
 	
-	public List<Ship> getShips() {
+	public List<MyShip> getShips() {
 		return ships;
 	}
 }
