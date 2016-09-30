@@ -8,9 +8,9 @@ public class PositionGenerator {
 	private List<MyShip> ships;
 	private Board board;
 	
-	public PositionGenerator(Board b) {
+	public PositionGenerator() {
 		ships = new ArrayList<MyShip>();
-		board = b;
+		board = new Board();
 		addShips();
 		generatePosition();
 	}
@@ -23,7 +23,7 @@ public class PositionGenerator {
 		ships.add(new MyShip(3));
 		ships.add(new MyShip(4));
 		ships.add(new MyShip(5));
-		Collections.reverse(getShips());
+		Collections.sort(getShips(), Collections.reverseOrder());
 	}
 	
 	private void generatePosition() {
@@ -43,22 +43,10 @@ public class PositionGenerator {
 					pos.setColumn(getRandom(0, board.getSize() - 1));
 				}
 			}
-			while(!isSpaceFree(pos, ship));
+			while(!board.isSpaceFree(pos, ship));
 			ship.setPosition(pos);
 			putOnBoard(ship);
 		}
-	}
-	
-	private boolean isSpaceFree(Position pos, Ship ship) {
-		if(pos.getOrientation().equals(Orientation.Horizontally))
-			for(int c = 0; c < ship.getSize(); c++)
-				if(!board.getBoard()[pos.getRow()][pos.getColumn() + c].equals(Symbols.EMPTY))
-					return false;
-		if(pos.getOrientation().equals(Orientation.Vertically))
-			for(int r = 0; r < ship.getSize(); r++)
-				if(!board.getBoard()[pos.getRow() + r][pos.getColumn()].equals(Symbols.EMPTY))
-					return false;
-		return true;
 	}
 	
 	private void putOnBoard(MyShip s) {
